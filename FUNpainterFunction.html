@@ -1,0 +1,652 @@
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <style>
+    html,body {margin:10; background-color: #004000;}
+  </style>
+  <meta name="description" content="This program is made for students who are tired to draw implicit functions.">
+   <title>
+   FUNpainterFunction
+  </title>
+
+ </head>
+
+<body style="margin:0; background: linear-gradient(#000000, #004000) repeat; ">
+ <table>
+  <tbody>
+   <tr>
+       <td>
+	   <div id="divPanels" style="position: absolute; left:0px; z-index:10;" onmouseover="divPanelsEnter()">
+  		   <label class="labelnum" style="color: white; font-weight: bold;" for="cb1">Inverse Color Map:</label> 
+		    <input type='checkbox' id='cb1' onchange='setDrawMethod(this);' style="color: red; font-weight: bold; background-color: rgba(0,0,255,0.5)"/>
+          <br>
+          <br>
+	       <label class="labelnum" style="border: none; font-size:14px;color:#999999; background: linear-gradient(rgba(0,32,0,0.5), rgba(200,200,200,0.5));font-weight: bold; width: 315px;" for="data">
+		   Your Labeled Data[        ]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :
+		   </label> 
+		   <br>
+	   	   <textarea id="data" style="border: none; font-size:14px;color:#999999;background: linear-gradient(rgba(200,200,200,0.5), rgba(0,32,0,0.5));font-weight: bold;" rows="10" cols="37" autofocus onkeypress="updateDataIf(event)">
+A=&#013;[0,20,10,10,-20,5,12,-5,30,45,-40,35]&#013;
+B=&#013;[20,0,-10,-10,20,-5,-12,5,45,30,40,-35]&#013;
+var L1=[10,20,-30,40]&#013;
+var A1=[0,20,10,10,30,45,-40,35]&#013;
+var A2=[30,45,-40,35]&#013;
+var A3=[0,20,10,10]&#013;
+//time(-30,10)
+
+		   </textarea>
+		   
+		   <br>
+		<select class="funlist" id="fs" type="text" onchange="debug.value = fs.value; evalAndDraw()" style="color:blue; line-height: 20px; font-size:14px; background: linear-gradient(rgba(200,200,200,0.5), rgba(0,32,0,0.5)); font-weight: bold; width: 315px;">
+		<option value="sin(x)*x-y*cos(y)">
+                    Your Function
+                </option>
+                <option value="y = x*x">
+                    y = x*x
+                </option>
+                <option value="5*sin(x)=y">
+                   5*sin(x) = y
+                </option>
+                <option value="x2=x*x,&#013;(x2+(y-abs(x))*(y-cbrt(x2))-1000)*&#013;polylines(A,x,y)">
+                    Hearts Lines
+                </option>
+                <option value="P(A,x,y)">
+                    Repulsing Points 
+                </option>
+                <option value="R(A,x,y)">
+                    Radial Function - Revealing Sticky Points 
+                </option>
+
+                <option value="(x*x + y*y) *(x*x + y*y) - (2*100 + 1000)*x*x + (2*100 - 1000)*y*y">
+                    Lemniscate of Booth
+                </option>
+                <option value="(x*x + y*y) *(x*x + y*y) - 1000*(x*x - y*y)">
+                    lLemniscate of Bernoulli
+                </option>
+                <option value="27*2*y*y - (2 - x)*(8*2 + x)*(8*2 + x)">
+                    Tschirnhausen cubic
+                </option>
+                <option value="x2=x*x,&#013; x2+(y-abs(x))*(y-cbrt(x2))=1000">
+                    Love Formula (Формула любви)
+                </option>
+                <option value="r=hyp(x,y),d=(1-r/50),&#013;y/=d,&#013;x/=d,&#013;x2=x*x,&#013;min((x2+(y-abs(x))*(y-cbrt(x2))-1000),(x%10)*(y%10))">
+                    Heartless World (Hurt)
+                </option>
+                <option value="x*x*x +6 -y*y*sin(y)">
+                    Spiral of Litvinenko-Ursol
+                </option>
+                <option value="x*x*x +6 -y*x*sin(y)">
+                    Spiral of Litvinenko-Ursol 2
+                </option>
+                <option value="min(abs(x),abs(y))-10/(sin(x*x)-y*y*y)">
+                    Глухова 1
+                </option>
+                <option value="min(x*x-y*y)-x*x*x/sin(y+x)">
+                    Глухова 2
+                </option>
+                <option value="x*x*x+6-y*cos(y)*x">
+                    Литвиненко 1
+                </option>
+                <option value="x*x*x+6-y*sin(y)*y">
+                    Литвиненко 2
+                </option>
+                <option value="pow(x,x)*x-y*x-y*y">
+                    Литвиненко 3
+                </option>
+                <option value="sin(x*y)-e(y-10)+max(x,y-10)">
+                    Литвиненко 4
+                </option>
+                <option value="sin(x*y)=e(y)">
+                    Литвиненко 5
+                </option>
+                <option value="sin(x)=cos(y)">
+                    Литвиненко 6
+                </option>
+                <option value="r=hyp(x*x,y*y),d=1-r/50,&#013;x/=d, y/=d,&#013;sin(x)=cos(y)">
+                    Литвиненко 7
+                </option>
+                <option value="sin(x-y*y-x)*x-y">
+                    Литвиненко 8
+                </option>
+                <option value="sqrt(sin(x*y)/cos(x*y))">
+                    Сима 1
+                </option>
+                <option value="sqrt(sin(x)-cos(y))">
+                    Сима 2
+                </option>
+                <option value="y*y/x-x*x/y">
+                    Cима 3
+                </option>
+                <option value="x*x*x*x*x*x*x*x/y-y*y*y*y*y*y*y*y/x">
+                    Cима 4
+                </option>
+                 <option value="r=hyp(x,y),&#013;y/=(1-(r+sin(r))/50),&#013;x/=(1-(r+cos(r))/50),&#013;x2=x*x+100*sin(x)*cos(y),&#013;min((x2+(y-abs(x))*(y-cbrt(x2))-1000),(x%10-5)*(y%10-5))">
+                   Heart Break Thrue Worlds 
+                </option>
+                <option value="r=hyp(x,y),a=arg(x,y), a+=(a<0)?2*pi:0, &#013;a*=2,&#013; r-32*cos(a)">
+                    Polar functions: Sleeping Eight 
+                </option>
+                <option value="r=hyp(x,y),a=arg(x,y),a+=(a<0)?2*pi:0, &#013; r-32*cos(5*a)">
+                    Polar functions: Flower 
+                </option>
+                <option value="r=hyp(x,y),a=arg(x,y), a+=(a<0)?2*pi:0,&#013; ( r-32*cos(8*a)) *(r-32)">
+                    Polar functions: Wheel 
+                </option>
+                <option value="r=hyp(x,y),a=arg(x,y), a+=(a<0)?2*pi:0,&#013;  2*10*(1+cos(a))=r">
+                    Polar functions: Cardioid
+                </option>
+
+          </select>
+	           <br>
+	  <textarea id="debug" style="border: none; font-size:14px; color:white; background: linear-gradient(rgba(200,200,200,0.5), rgba(0,32,0,0.5));font-weight: bold;" rows="10" cols="37" autofocus onkeypress="testKey(event)">sin(x)*x-y*cos(y)</textarea>	   
+		  <br>
+          <br>
+          <br>
+          <input class="button" type="button" value="Press and Wait for Result" onclick="evalAndDraw();" style="background: linear-gradient(to bottom right, rgba(0,0,200,0.5), rgba(200,0,0,0.5)); color: #AAFFAA;">
+		  <br>
+          <br>
+		   <input class="inputnum" style="visibility: hidden;color: red; font-weight: bold; background-color: rgba(0,0,255,0.5)"  id="x1" type="text" value="16" onkeyup="testThicknessKey(event)" onwheel="testWheel(event)">           
+		   <br>
+		   <input class="inputnum" type="button" value="<<" onclick="scalebAndDraw(0.5);" style="color: red;font-weight: bold; background-color: rgba(0,0,255,0.5)">
+		   <label class="labelnum" style="color: red;font-weight: bold;" for="x1">Thickness parameter:</label> 
+		   <input class="inputnum" type="button" value=">>" onclick="scalebAndDraw(2);" style="color: red; font-weight: bold; background-color: rgba(0,0,255,0.5)">
+		   <br>
+         <pre class="labelnum" style="color: white;">
+       sin(x)   cos(y)   tg(x)     
+       sh(y)    ch(x)    th(y)
+       ash(x)   ach(y)   ath(y)	   
+       sqrt(x)  cbrt(y)  pow(x,y)    
+       e(x)     ln(y)    abs(x) 
+       max(x,y) min(y,x)  sgn(x)  
+       hyp(x,y) arg(x,y)
+       rho(x0,y0, x,y)   
+       R([x0,y0, x1,y1, ...], x,y)
+       P([x0,y0, x1,y1, ...], x,y)
+       line(x0,y0, x1,y1, x,y) 
+       lin(L, x,y) 
+       polylines([x0,y0,..], x,y)
+       E=2.718281828....
+       pi=3.1415926.....
+       sqrt2=1.41.....
+       </pre>
+	   <div>
+        </td>
+        <td>
+		<div id="divcanvas" style="position: absolute; left:20px;">
+        <canvas width="1000" height="1000" id="x" onmousedown="canvasMouseDown(event)" onmousemove="moveDiv(event)" onwheel="testWheel(event)">
+          If You see this text then You use old browser.
+        </canvas>
+		</div>
+       </td>
+
+    </tr>
+</tbody></table>
+ <div id="box-shadow-div" style="position: fixed; width: 80px; height: 20px; border-radius: 20%; background-color:#00AA00AA; color:green; /*box-shadow: 0 0 1px 1px green;*/ top: 0;left: 0;">Hello</div>
+ <script>
+ 'use strict';
+      var sin = Math.sin;
+      var cos = Math.cos;
+      var sqrt = Math.sqrt;
+      var cbrt = Math.cbrt;
+      var pow = Math.pow;
+	  var hyp = Math.hypot;
+	  var rho = function(x0,y0,x,y){ return hyp((x-x0),(y-y0))-0.25}
+  	  var R = function(PA,x,y){var r=1; var ll=PA.length; for(let i=0; i<ll; i+=2){let ri=hyp((x-PA[i]),(y-PA[i+1]))-0.25; r*=ri;} return r}	  
+	  var P = function(PA,x,y){var r=-2e256; var ll=PA.length; for(let i=0; i<ll; i+=2){let ri=1/4-hyp((x-PA[i]),(y-PA[i+1])); if(r<ri)r=ri;} return r}	  
+      var tg = Math.tan;
+      var ln=  Math.log;
+      var e=  Math.exp;
+      var abs=  Math.abs;
+      var sgn=  Math.sign;
+      var max=  Math.max;
+      var min=  Math.min;
+	  var ch= Math.cosh;	
+	  var sh= Math.sinh;	
+      var th= Math.tanh;	
+      var ach= Math.acosh;	
+      var ash= Math.asinh;	
+      var ath= Math.atanh;
+	  var arg = function(x,y){ return Math.atan2(y,x)}
+
+// (x-x0)/(x1-x0)=(y-y0)/(y1-y0)
+// (-y1+y0)x  +(-x0+x1)y + y1x0-x1y0   
+
+     var line = function(x0,x1, y0,y1, x,y){var A=(-y1+y0); var B=(-x0+x1); var D=y1*x0-x1*y0; var N=hyp(A,B); var a=A/N; var b=B/N; var d=D/N; return (a*x+b*y+d); }
+	 var lin = function(L, x,y){var A=(-L[3]+L[1]); var B=(-L[0]+L[2]); var D=L[3]*L[0]-L[2]*L[1]; var N=hyp(A,B); var a=A/N; var b=B/N; var d=D/N; return (a*x+b*y+d)}  
+	 var polylines = function(L, x,y){var r=2e256; var ll=L.length-2; var x0=L[0],y0=L[1],x1=L[2], y1=L[3]; var ri=0;
+	                                  var A, B, D, N,a,b,d;
+  	                                  for(let i=0; i<ll; i+=2)
+									    {
+										 A=(-y1+y0); B=(-x0+x1); D=y1*x0-x1*y0; N=hyp(A,B); a=A/N; b=B/N; d=D/N;
+ 	  									  ri=(a*x+b*y+d);
+										   if(ri<0)ri=-ri;
+ 										    ri-=1/8;
+											 if(r>ri)r=ri;
+											  x0=x1;y0=y1;x1=L[4+i];y1=L[5+i];
+										}
+										return r;
+									}  
+
+var E=Math.E;          // returns Euler's number
+var pi=Math.PI;         // returns PI
+var sqrt2=Math.SQRT2;      // returns the square root of 2
+var sqrt1_2=Math.SQRT1_2;    // returns the square root of 1/2
+var ln2=Math.LN2;        // returns the natural logarithm of 2
+var ln10=Math.LN10;       // returns the natural logarithm of 10
+var log2e=Math.LOG2E;      // returns base 2 logarithm of E
+var log10e=Math.LOG10E;     // returns base 10 logarithm of E
+
+var A = [0,20, 10,10, -20,5, 12,-5, 30,45, -40,35];
+var B = [20,0, -10,-10, 20,-5, -12,+5, 45,30, 40,-35];
+var L1=[10,20,-30,40];
+var A1=[0,20,10,10,30,45,-40,35];
+var A2=[30,45,-40,35];
+var A3=[0,20,10,10];
+
+     var w=1000;
+	 var h=1000;
+     var w_2 = w/2;
+     var h_2 = h/2;
+
+	 var l=w*h;
+     var zm = 10;
+	 var mechecked=false;
+	 
+	 
+	 var Fbuffer = new ArrayBuffer(8*l);
+     var F = new Float64Array(Fbuffer);
+	 var f = function(x,y){ return 0;}
+	 
+	 var ggbuf = new ArrayBuffer(l);
+	 var G =  new Uint8ClampedArray(ggbuf);
+ 	
+    var a, b=16, c;
+    var cf = document.getElementById('x');
+	var aData = document.getElementById('data');
+    var debug = document.getElementById('debug');
+    var fs = document.getElementById('fs');
+    var x1 = document.getElementById("x1");
+   
+    var ctext  = cf.getContext('2d');
+	     ctext.fillStyle = "#0F0";
+         ctext.font = "italic 8pt Arial";
+
+	 var imageData = ctext.getImageData(0, 0, w, h);
+      var data = imageData.data;
+      
+       var d32=new Uint32Array(data.buffer);
+	
+	
+   var x,y;
+    function fun(a){
+	var myeval=eval;
+       try{
+	       //myeval(a);
+		 }
+	  catch(e){ debug.value+= (" "+e); return;} 
+		  
+		var la=a.length; 
+		var b=a;  	    
+	    var i=0|0;
+        var i1=0|0;
+		var cc=0; 
+		  i=a.lastIndexOf(","); //search last ',' in expressions such as "x/=10, y*=2, x*x=y  "
+	     {
+		   i=++i;
+	        b=(a.substr(i)).trim();        //ought to be like b="x*x=y"
+
+			  var bnew=b; 		
+			   var lb=b.length;
+              var j=0;		   
+			   while(true)
+				 {
+				  j = b.indexOf("=",j);  //search "="
+				   if(j<0) break; // if "=" is absent then we have implicit expression like "x*x-y" -- break while loop and proceed as usual
+				   // else   test on cases with "==" or "==="
+					 if(j+1<lb && b[j+1]==="=")
+					   {
+					    while(j<lb && b[j]==="="){++j;}
+						 continue;  
+					   }
+				     else {    // if we found true "="
+                            var b1="("+b.substring(0,j)+")";
+                            var b2="("+b.substring(j+1)+")";
+						     bnew=b1+"-"+b2; 		
+						      a=a.substring(0,i)+bnew;
+                              break;      					  
+				          }
+			    }
+		  }
+		//debug.value = a;  
+		console.log(" a=%s",a);
+        var str = `f=function(x,y){return(${a})}`
+		  try{
+		      myeval(a);
+               myeval(str);  // f = function(x , y) { return  (sin(x)*x-y*cos(y)) ; } 
+			 }
+		  catch(e){ debug.value+= (" "+e);} 
+    }
+
+   function g(x, m) {return (abs(x%m)<1/8)?80 : (abs((x*10)%m)<1)?40 : 0; }
+   //function g(x, m) {x-=5;if(x<0)x=-x;var s=(x%m-5);if(s<0)s=-s; if(s<0.001)return 64; return 0 }
+   //function g(x, m) {if(x<0)x=-x;return (1-sgn(x%m))<<6}
+   var zm=10;
+   
+   function grid(m){
+        var i, j ;
+		var x,y;  
+        var gx,gy;  
+
+
+         var c = 0; 
+        for(i = 0; i < h; i++){
+            y = (-i + h_2)/zm;
+			//y/=(1-abs(y)/50);
+             if(i==h_2)gy = 160;else gy=g(y, m);
+            
+            for(j = 0; j < w; j++){
+                x = (j - w_2)/zm;
+			//	 if(i==h_2)gy = 160;else gy=g(y, m);
+                 if(j==h_2)gx = 160;else gx=g(x, m);
+				  var gg=(gx+gy);
+				   G[c]=gg;
+				d32[c]=
+				        255       << 24 
+ 					    |G[c]     <<  8 
+
+				c++; 
+            }
+        }
+		ctext.putImageData(imageData, 0, 0);
+    }
+    grid(10);
+
+	function preEval()
+	{
+	  
+	 var i,j,k;
+	 var x,y;
+	 
+	  console.log("preEval() ...a="+a);
+	   fun(a);
+	   console.log(" ...f="+f);
+	   
+	   console.time("preEvalTime");
+	   // console.profile("ProfilepreEval"); 
+	    i=0;j=0;
+		 x =  (j - w_2)/zm; 
+	     y = -(i - h_2)/zm; 
+	   for(let k=0; k<l; ++k)
+	   {
+          F[k] = f(x,y);
+ 	       if(j==w-1)
+			 { 
+			    j=0;
+			 	++i;
+				 y = (-i + h_2)/zm; 
+			 }
+		   else
+			 {
+			  ++j
+			 }
+		   x = (j - w_2)/zm; 
+	   }
+	 //  console.profileEnd("ProfilepreEval"); 
+	  console.timeEnd("preEvalTime"); 
+	}
+
+
+var sdec=
+`function dec(b)
+	{
+        var  z, v, vv;
+        b=16/b;
+		for(let k=0; k<l; ++k)
+		{
+                 z = F[k];
+                  v = z*b;
+                 if(z > 0)
+				 {
+					vv = 255-v;
+					vv= (vv<40)?40:vv;
+				    d32[k]=
+					        255 << 24 
+                            |0 << 16 
+							|G[k] << 8
+						    |vv            
+                    
+                 }
+                 else
+				  {
+					vv = 255+v;
+					 vv= (vv<40)?40:vv;
+ 					 d32[k]=
+                            255 << 24   
+						    |vv  << 16           
+                            |G[k] << 8
+
+                  }
+		}
+        ctext.putImageData(imageData, 0, 0);
+    }
+`;	
+
+var dec = function(b)
+	{
+        var  z, v, vv;
+        b=16/b;
+		for(let k=0; k<l; ++k)
+		{
+                 z = F[k];
+                  v = z*b;
+                 if(z > 0)
+				 {
+					vv = 255-v;
+					vv= (vv<40)?40:vv;
+				    d32[k]=
+					        255 << 24 
+                            |0 << 16 
+							|G[k] << 8
+						    |vv            
+                    
+                 }
+                 else
+				  {
+					vv = 255+v;
+					 vv= (vv<40)?40:vv;
+ 					 d32[k]=
+                            255 << 24   
+						    |vv  << 16           
+                            |G[k] << 8
+
+                  }
+		}
+        ctext.putImageData(imageData, 0, 0);
+    }
+
+    function ced(b)
+	{
+        var  z, v, vv;
+		  b=16*b;
+		for(let k=0; k<l; ++k)
+		{
+                z = F[k];
+                 if(z > 0)
+				 {
+				  v = z*b;
+				   vv = v*256/(32+v);
+				    if(vv<80)vv=80;
+//					if(vv>255)vv=255;
+//				    vv = (vv<80)?80:vv;
+		    		 d32[k]=255 << 24   
+			                |G[k] << 8
+						    |vv             
+                 }
+                 else
+				  {
+  				   v = -z*b;
+				   vv = v*256/(32+v);
+				    if(vv<80)vv=80;
+//					if(vv>255)vv=255;
+				    //vv = (vv<80)?80:vv;
+		    		 d32[k]=255 << 24   
+							|vv << 16
+			                |G[k] << 8
+
+                  }
+		}
+        ctext.putImageData(imageData, 0, 0);
+    }
+    
+	function  draw() 
+	{
+	  if(mechecked)ced(b);
+      else dec(b); 
+	}
+	
+  
+    function getb(){b = x1.value; }
+    function geta(){a = debug.value;}
+    function getabc()
+    {
+	 geta();
+     getb();
+     }
+function evalAndDraw()
+{    
+
+//cf.style.cursor="progress"
+  getabc(); 
+   preEval();
+    draw();  
+//  cf.style.cursor="auto"	
+}
+    
+function testKey(e)    
+{
+   if (e.keyCode == 13 || e.keyCode == 10){timeStop= true; clearInterval(myTime); evalAndDraw();}
+}
+
+function scalebAndDraw(s)
+{
+ var b1;
+  b1=b*s; if(b1>0)b=b1; x1.value=""+b;
+  getb(); draw();
+}
+
+function testThicknessKey(e)    
+{
+ if(e.keyCode==37) scalebAndDraw(0.5);
+ if(e.keyCode==39) scalebAndDraw(2  );
+ 
+}
+
+
+function testWheel(e)
+{
+ e.preventDefault();
+ if(e.deltaY>0) scalebAndDraw(3/4);
+ if(e.deltaY<0) scalebAndDraw(4/3);
+ return false;
+}
+
+
+function setDrawMethod(me)
+{
+  mechecked = me.checked;
+   draw();
+}
+
+function updateDataIf(e)
+{
+ var s="";
+ var myeval = eval;
+ if(e.keyCode==10 || e.keyCode==13) 
+ {
+   s = aData.value;
+		  try{
+		      myeval(s);
+			 }
+		  catch(e){ aData.value+= (" "+e);} 
+
+ }
+}
+
+  function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+      }
+
+var divPanels = document.getElementById("divPanels");	   	  
+function canvasMouseDown(e)
+{
+	   divPanels.style.zIndex=-10;
+}
+function divPanelsEnter()
+{
+	   divPanels.style.zIndex=10;
+}
+
+var bsDiv = document.getElementById("box-shadow-div");
+function moveDiv(event){
+               
+                var mx, my;
+    // On mousemove use event.clientX and event.clientY to set the location of the div to the location of the cursor:
+                    mx = event.clientX;
+                    my = event.clientY;               
+var m = getMousePos(cf, event);
+             var y = -(m.y - h_2)/zm;
+             var x =  (m.x - w_2)/zm;
+                    if ( typeof mx !== 'undefined' )
+					{
+                        bsDiv.style.left = mx +10 + "px";
+                        bsDiv.style.top = my - 10 + "px";
+						bsDiv.innerHTML=""+x.toPrecision(3)+ ", "+y.toPrecision(3);
+                    }
+                //return false;
+            }
+			
+function myTrim(x) {
+    return x.replace(/^\s+|\s+$/gm,'');
+}
+
+var timeStop= true;
+var t=0.0;
+var _t0=0*1000;
+var _t1=50*1000;
+var _dt=100;
+var myTime;
+
+function time(t0, t1)
+{
+  timeStop= false;
+  _t0=t0*1000;
+  _t1=t1*1000;
+   t=0; 
+   if(t0>0)t=t0;
+   if(t1<0)t=t1;
+   myTime = setInterval(myTimer, _dt);
+   return t;
+}
+
+
+
+function myTimer() {
+     t+=_dt/1000;
+	 if(_dt>0)scalebAndDraw(30/29);
+	 if(_dt<0)scalebAndDraw(29/30);
+	 if(t*1000> _t1){t=_t1/1000; _dt=-_dt;}
+	 if(t*1000< _t0){t=_t0/1000; _dt=-_dt;}
+	 //console.log("t=%f",t)
+	 //bsDiv.innerHTML= "t="+t;
+	 
+   
+}
+
+</script>
+
+</body>
+</html>
